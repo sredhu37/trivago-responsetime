@@ -62,7 +62,7 @@ const getRows = async (setRows, setIsLoading) => {
       }
     })
 
-    results.sort((a, b) => a.responseTimeEurope - b.responseTimeEurope)   // Sort according to responseTimeEurope
+    results.sort((a, b) => (a.responseTimeEurope + a.responseTimeUS + a.responseTimeAsia) - (b.responseTimeEurope + b.responseTimeUS + b.responseTimeAsia))   // Sort according to avg responseTime of 3 regions
 
     setRows(results.map((sitedata, index) =>
       <tr key={index}>
