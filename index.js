@@ -22,22 +22,12 @@ app.get("/", (req, res) => {
   res.send("App seems to be working fine")
 })
 
-app.get("/trivago", (req, res) => {
-  axiosInstance({
-    method: "get",
-    url: "https://trivago.com",
-    timeout: 20 * 1000  // 20 seconds
-  })
-  .then(resp => {
-    res.send({url: resp.config.url, responseTimeInSec: resp.headers['request-duration']/1000})
-  })
-  .catch(error => {
-    res.send(`Error: ${error}`)
-  })
-})
-
-app.get("/metrics", (req, res) => {
-  const urls = [
+/**
+ * req.query.urls need to be a comma separated list of urls
+ * If empty, we will evaluate the default urls
+ */
+app.get("/testspeed", (req, res) => {
+  const urls = req.query.urls ? req.query.urls.split(',') : [
     "https://trivago.com",
     "https://booking.com",
     "https://airbnb.com",
@@ -51,7 +41,7 @@ app.get("/metrics", (req, res) => {
   const reqs = urls.map(url => axiosInstance({
     method: "get",
     url: url,
-    timeout: 20 * 1000  // 20 seconds
+    // timeout: 20 * 1000  // 20 seconds
   }))
 
   axios.all(reqs)
