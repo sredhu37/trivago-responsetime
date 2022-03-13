@@ -13,7 +13,8 @@ axiosInstance.interceptors.request.use((config) => {
 axiosInstance.interceptors.response.use((response) => {
   const start = response.config.headers['request-startTime']
   const end = process.hrtime(start)
-  response.headers['request-duration'] = end[0]
+  const milliseconds = Math.round((end[0] * 1000) + (end[1] / 1000000))
+  response.headers['request-duration'] = milliseconds
   return response
 })
 
@@ -28,7 +29,7 @@ app.get("/trivago", (req, res) => {
     timeout: 20 * 1000  // 20 seconds
   })
   .then(resp => {
-    res.send({url: resp.config.url, responseTimeInSec: resp.headers['request-duration']})
+    res.send({url: resp.config.url, responseTimeInSec: resp.headers['request-duration']/1000})
   })
   .catch(error => {
     res.send(`Error: ${error}`)
@@ -58,7 +59,7 @@ app.get("/metrics", (req, res) => {
     durations = responses.map(r => {
       return {
         url: r.config.url,
-        responseTimeInSec: r.headers['request-duration']
+        responseTimeInSec: r.headers['request-duration']/1000
       }
     })
     res.send(durations)
