@@ -1,7 +1,10 @@
 const express = require('express')
 const axios = require('axios')
+const cors = require('cors')
 
 const app = express()
+app.use(cors())
+
 const axiosInstance = axios.create()
 const port = 3000
 
