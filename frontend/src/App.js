@@ -96,6 +96,8 @@ const getRows = async (setRows, setIsLoading, setShowError, setErrorMsg) => {
           responseTimeEurope: responseEurope.data.find(d => d.url === url).responseTimeInSec,
           responseTimeAsia: responseAsia.data.find(d => d.url === url).responseTimeInSec
         }
+      } else {
+        console.log(`responseUS.data: ${responseUS.data} responseEurope.data: ${responseEurope.data} responseAsia.data: ${responseAsia.data}`)
       }
     })
 
