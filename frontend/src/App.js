@@ -89,11 +89,13 @@ const getRows = async (setRows, setIsLoading, setShowError, setErrorMsg) => {
     const [responseUS, responseEurope, responseAsia]  = await axios.all(requests)
 
     const results = urls.map(url => {
-      return {
-        url: url,
-        responseTimeUS: responseUS.data.find(d => d.url === url).responseTimeInSec,
-        responseTimeEurope: responseEurope.data.find(d => d.url === url).responseTimeInSec,
-        responseTimeAsia: responseAsia.data.find(d => d.url === url).responseTimeInSec
+      if (responseUS && responseUS.data && responseEurope && responseEurope.data && responseAsia && responseAsia.data) {
+        return {
+          url: url,
+          responseTimeUS: responseUS.data.find(d => d.url === url).responseTimeInSec,
+          responseTimeEurope: responseEurope.data.find(d => d.url === url).responseTimeInSec,
+          responseTimeAsia: responseAsia.data.find(d => d.url === url).responseTimeInSec
+        }
       }
     })
 
